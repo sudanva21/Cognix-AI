@@ -3,7 +3,7 @@
 // This file contains the OpenRouter API configuration
 
 export const API_CONFIG = {
-  OPENROUTER_API_KEY: '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',
+  OPENROUTER_API_KEY: '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',
   OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1/chat/completions',
   DEFAULT_MODEL: 'openai/gpt-3.5-turbo'
 }
