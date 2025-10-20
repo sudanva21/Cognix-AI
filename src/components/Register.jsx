@@ -56,23 +56,23 @@ export default function Register() {
   }
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center p-4">
+    <div className="relative w-full h-full flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md my-4"
       >
         {/* Logo/Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4"
+            className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3 sm:mb-4"
           >
-            <Sparkles className="w-8 h-8 text-white" />
+            <Sparkles className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </motion.div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Join COGNIX</h1>
-          <p className="text-white/60">Create your account</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 px-4">Join COGNIX</h1>
+          <p className="text-sm sm:text-base text-white/60">Create your account</p>
         </div>
 
         {/* Register Form */}

@@ -1,12 +1,22 @@
-# 🚨 Quick Fix: "User not found" Error on Vercel
+# 🚨 Quick Fix: API Errors on Vercel
 
 ## The Problem
-You deployed to Vercel but getting: **"User not found"** error when chatting.
+You deployed to Vercel but getting errors like:
+- **"User not found"**
+- **401 Unauthorized**
+- **"Authentication Error"**
 
 ## The Solution (5 minutes)
 
-### Step 1: Get Your Supabase Credentials
+### Step 1: Get Your API Keys
 
+**OpenRouter API Key:**
+1. Go to [https://openrouter.ai/keys](https://openrouter.ai/keys)
+2. Sign in or create an account
+3. Click "Create Key"
+4. Copy the key (starts with `sk-or-v1-...`)
+
+**Supabase Credentials:**
 1. Go to [https://app.supabase.com](https://app.supabase.com)
 2. Open your COGNIX project
 3. Click **Settings** (⚙️) → **API**
@@ -20,14 +30,19 @@ You deployed to Vercel but getting: **"User not found"** error when chatting.
 2. Open your COGNIX project
 3. Click **Settings** tab
 4. Click **Environment Variables**
-5. Add these TWO variables:
+5. Add these THREE variables:
 
 **Variable 1:**
+- Name: `VITE_OPENROUTER_API_KEY`
+- Value: `sk-or-v1-...` (paste your OpenRouter key)
+- Environment: Check all three (Production, Preview, Development)
+
+**Variable 2:**
 - Name: `VITE_SUPABASE_URL`
 - Value: `https://your-project-id.supabase.co` (paste your URL)
 - Environment: Check all three (Production, Preview, Development)
 
-**Variable 2:**
+**Variable 3:**
 - Name: `VITE_SUPABASE_ANON_KEY`
 - Value: `eyJhbGc...` (paste your anon key)
 - Environment: Check all three (Production, Preview, Development)

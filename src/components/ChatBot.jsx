@@ -195,9 +195,31 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
       }
     } catch (error) {
       console.error('Error:', error)
+      console.error('Error details:', error.response?.data)
+      
+      let errorContent = 'Sorry, I encountered an error. '
+      
+      // Handle specific error codes
+      if (error.response?.status === 401) {
+        errorContent = '🔑 Authentication Error: Your OpenRouter API key is invalid or expired.\n\n' +
+          'To fix this:\n' +
+          '1. Get a new API key from https://openrouter.ai/keys\n' +
+          '2. Update VITE_OPENROUTER_API_KEY in your .env file (locally)\n' +
+          '3. Update VITE_OPENROUTER_API_KEY in Vercel environment variables (production)\n' +
+          '4. Restart your dev server or redeploy'
+      } else if (error.response?.status === 400) {
+        errorContent = '⚠️ Bad Request: ' + (error.response?.data?.error?.message || 'Invalid request format')
+      } else if (error.response?.status === 429) {
+        errorContent = '⏱️ Rate Limit: Too many requests. Please wait a moment and try again.'
+      } else if (error.response?.status === 402) {
+        errorContent = '💳 Payment Required: Your OpenRouter account has insufficient credits. Please add credits at https://openrouter.ai/credits'
+      } else {
+        errorContent += error.response?.data?.error?.message || error.message || 'Unknown error occurred'
+      }
+      
       const errorMessage = {
         role: 'assistant',
-        content: `Sorry, I encountered an error: ${error.response?.data?.error?.message || error.message}. Please check your API key and try again.`,
+        content: errorContent,
         timestamp: new Date(),
         isError: true
       }
@@ -231,21 +253,21 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
         className="w-full max-w-4xl h-[95vh] sm:h-[90vh] glass rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
       >
         {/* Header */}
-        <div className="glass border-b border-white/10 p-3 sm:p-6 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
+        <div className="glass border-b border-white/10 p-2 sm:p-6 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0"
+              className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0"
             >
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </motion.div>
-            <div className="min-w-0">
-              <h1 className="text-base sm:text-2xl font-bold text-white truncate">COGNIX</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-sm sm:text-2xl font-bold text-white truncate">COGNIX</h1>
               <p className="text-xs sm:text-sm text-white/60 hidden sm:block">Powered by Kriszz</p>
             </div>
           </div>
-          <div className="flex gap-1 sm:gap-2">
+          <div className="flex gap-1 sm:gap-2 flex-shrink-0">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}

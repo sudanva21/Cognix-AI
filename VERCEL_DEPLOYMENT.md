@@ -37,21 +37,30 @@ vercel
 
 ### 3. Add Environment Variables in Vercel
 
-This is the **MOST IMPORTANT** step to fix the "User not found" error!
+This is the **MOST IMPORTANT** step to fix authentication and API errors!
 
 #### In Vercel Dashboard:
 
 1. Go to your project in Vercel
 2. Click **Settings** tab
 3. Click **Environment Variables** in the sidebar
-4. Add these variables:
+4. Add these THREE variables:
 
 | Name | Value | Environment |
 |------|-------|-------------|
+| `VITE_OPENROUTER_API_KEY` | Your OpenRouter API key | Production, Preview, Development |
 | `VITE_SUPABASE_URL` | Your Supabase project URL | Production, Preview, Development |
 | `VITE_SUPABASE_ANON_KEY` | Your Supabase anon key | Production, Preview, Development |
 
 **Where to find these values:**
+
+**OpenRouter API Key:**
+- Go to [https://openrouter.ai/keys](https://openrouter.ai/keys)
+- Sign in or create an account
+- Generate a new API key
+- Copy the key (starts with `sk-or-v1-...`)
+
+**Supabase Credentials:**
 - Go to [https://app.supabase.com](https://app.supabase.com)
 - Select your project
 - Go to **Settings** → **API**

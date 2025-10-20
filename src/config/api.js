@@ -2,8 +2,18 @@
 // COGNIX - AI Assistant powered by Kriszz
 // This file contains the OpenRouter API configuration
 
+// Use environment variable if available, otherwise fall back to hardcoded key
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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'
+
+// Validate API key
+if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your_api_key_here') {
+  console.error('❌ OpenRouter API key is not configured!')
+  console.error('Please set VITE_OPENROUTER_API_KEY in your .env file or Vercel environment variables')
+  console.error('Get your API key from: https://openrouter.ai/keys')
+}
+
 export const API_CONFIG = {
-  OPENROUTER_API_KEY: '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',
+  OPENROUTER_API_KEY,
   OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1/chat/completions',
   DEFAULT_MODEL: 'openai/gpt-3.5-turbo'
 }
