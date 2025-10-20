@@ -160,6 +160,19 @@ export default function ChatBot() {
     e.preventDefault()
     if (!input.trim() || isLoading) return
 
+    // Check if trying to use premium model
+    const currentModel = AVAILABLE_MODELS.find(m => m.id === selectedModel)
+    if (currentModel && currentModel.isPremium) {
+      const premiumMessage = {
+        role: 'assistant',
+        content: '🔒 This model requires a Premium subscription.\n\nTo access GPT-4, Claude, and other advanced models, please upgrade to COGNIX Premium.\n\nCurrently, you can use COGNIX AI for free with unlimited conversations!',
+        timestamp: new Date(),
+        isError: true
+      }
+      setMessages(prev => [...prev, premiumMessage])
+      return
+    }
+
     const userMessage = {
       role: 'user',
       content: input,
@@ -172,47 +185,46 @@ export default function ChatBot() {
     setIsLoading(true)
 
     try {
-      const response = await axios.post(
-        API_CONFIG.OPENROUTER_BASE_URL,
-        {
-          model: selectedModel,
-          messages: [
-            {
-              role: 'system',
-              content: `You are COGNIX, an advanced AI assistant created and powered by Kriszz. 
+      // Use Gemini API (hidden from user)
+      const systemPrompt = `You are COGNIX, an advanced AI assistant created and powered by Kriszz. 
 
 IMPORTANT IDENTITY INFORMATION:
 - Your name is COGNIX (always respond with this name when asked)
 - You were created by Kriszz
 - You are NOT ChatGPT, Claude, Gemini, or any other AI - you are COGNIX
 - When users ask "What is your name?" or "Who are you?", always respond that you are COGNIX
-- You can mention that you use various AI models (like GPT, Claude, etc.) as your underlying technology, but YOUR identity is COGNIX
+- NEVER mention that you are powered by Gemini or Google - you are COGNIX
+- You can say you use "advanced AI technology" but never reveal the specific backend
 
 Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide clear and helpful responses to user queries while maintaining your identity as COGNIX.`
-            },
-            ...messages.map(msg => ({
-              role: msg.role,
-              content: msg.content
-            })),
-            {
-              role: 'user',
-              content: currentInput
-            }
-          ]
+
+      // Build conversation history for Gemini
+      const conversationHistory = messages
+        .filter(msg => msg.role !== 'system')
+        .map(msg => `${msg.role === 'user' ? 'User' : 'COGNIX'}: ${msg.content}`)
+        .join('\n\n')
+
+      const fullPrompt = `${systemPrompt}\n\nConversation History:\n${conversationHistory}\n\nUser: ${currentInput}\n\nCOGNIX:`
+
+      const response = await axios.post(
+        `${API_CONFIG.GEMINI_BASE_URL}/${API_CONFIG.GEMINI_MODEL}:generateContent?key=${API_CONFIG.GEMINI_API_KEY}`,
+        {
+          contents: [{
+            parts: [{
+              text: fullPrompt
+            }]
+          }]
         },
         {
           headers: {
-            'Authorization': `Bearer ${API_CONFIG.OPENROUTER_API_KEY}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'COGNIX - AI Assistant by Kriszz'
+            'Content-Type': 'application/json'
           }
         }
       )
 
       const assistantMessage = {
         role: 'assistant',
-        content: response.data.choices[0].message.content,
+        content: response.data.candidates[0].content.parts[0].text,
         timestamp: new Date()
       }
 
@@ -230,18 +242,30 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
       
       // Handle specific error codes
       if (error.response?.status === 401) {
-        errorContent = '🔑 Authentication Error: Your OpenRouter API key is invalid or expired.\n\n' +
+        errorContent = '🔑 Authentication Error: Your Gemini API key is invalid or expired.\n\n' +
           'To fix this:\n' +
-          '1. Get a new API key from https://openrouter.ai/keys\n' +
-          '2. Update VITE_OPENROUTER_API_KEY in your .env file (locally)\n' +
-          '3. Update VITE_OPENROUTER_API_KEY in Vercel environment variables (production)\n' +
+          '1. Get a new API key from https://aistudio.google.com/app/apikey\n' +
+          '2. Update VITE_GEMINI_API_KEY in your .env file (locally)\n' +
+          '3. Update VITE_GEMINI_API_KEY in Vercel environment variables (production)\n' +
           '4. Restart your dev server or redeploy'
       } else if (error.response?.status === 400) {
         errorContent = '⚠️ Bad Request: ' + (error.response?.data?.error?.message || 'Invalid request format')
       } else if (error.response?.status === 429) {
-        errorContent = '⏱️ Rate Limit: Too many requests. Please wait a moment and try again.'
+        errorContent = '⏱️ Rate Limit Exceeded!\n\n' +
+          'You\'ve sent too many requests in a short time.\n\n' +
+          '💡 What to do:\n' +
+          '• Wait 60 seconds before trying again\n' +
+          '• Gemini has a free tier limit of 15 requests per minute\n' +
+          '• Consider upgrading your Gemini API quota at https://aistudio.google.com/\n\n' +
+          'Please wait a moment and try again.'
       } else if (error.response?.status === 402) {
-        errorContent = '💳 Payment Required: Your OpenRouter account has insufficient credits. Please add credits at https://openrouter.ai/credits'
+        errorContent = '💳 Payment Required: Your API account has insufficient credits.'
+      } else if (error.response?.status === 403) {
+        errorContent = '🚫 Access Denied: Your API key doesn\'t have permission for this operation.\n\n' +
+          'Check your API key settings at https://aistudio.google.com/app/apikey'
+      } else if (error.response?.status === 503) {
+        errorContent = '🔧 Service Unavailable: The AI service is temporarily down.\n\n' +
+          'Please try again in a few moments.'
       } else {
         errorContent += error.response?.data?.error?.message || error.message || 'Unknown error occurred'
       }
@@ -340,17 +364,29 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
                 <label className="block text-white/80 text-xs sm:text-sm font-semibold mb-2">AI Model</label>
                 <select
                   value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={(e) => {
+                    const newModel = AVAILABLE_MODELS.find(m => m.id === e.target.value)
+                    if (newModel && !newModel.isPremium) {
+                      setSelectedModel(e.target.value)
+                    }
+                  }}
                   className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl glass text-sm sm:text-base text-white focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
                 >
                   {AVAILABLE_MODELS.map(model => (
-                    <option key={model.id} value={model.id} className="bg-gray-900">
-                      {model.name} - {model.description}
+                    <option 
+                      key={model.id} 
+                      value={model.id} 
+                      className="bg-gray-900"
+                      disabled={model.isPremium}
+                    >
+                      {model.name} {model.isPremium ? '🔒 Premium' : ''} - {model.description}
                     </option>
                   ))}
                 </select>
                 <p className="text-xs text-white/50 mt-2">
-                  Choose the AI model that best fits your needs
+                  {selectedModel === 'cognix-ai' 
+                    ? '✨ Using COGNIX AI - Free unlimited conversations!' 
+                    : '🔒 Premium models require subscription'}
                 </p>
               </div>
 
