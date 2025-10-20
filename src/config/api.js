@@ -3,7 +3,7 @@
 // This file contains the OpenRouter API configuration
 
 // Use environment variable if available, otherwise fall back to hardcoded key
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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'
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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'
 
 // Validate API key
 if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your_api_key_here') {
@@ -15,10 +15,11 @@ if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your_api_key_here') {
 export const API_CONFIG = {
   OPENROUTER_API_KEY,
   OPENROUTER_BASE_URL: 'https://openrouter.ai/api/v1/chat/completions',
-  DEFAULT_MODEL: 'openai/gpt-3.5-turbo'
+  DEFAULT_MODEL: 'deepseek/deepseek-r1-0528-qwen3-8b:free'
 }
 
 export const AVAILABLE_MODELS = [
+  { id: 'deepseek/deepseek-r1-0528-qwen3-8b:free', name: 'DeepSeek R1 (Free)', description: 'Advanced reasoning model - Free' },
   { id: 'openai/gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Fast and efficient' },
   { id: 'openai/gpt-4', name: 'GPT-4', description: 'Most capable OpenAI model' },
   { id: 'openai/gpt-4-turbo', name: 'GPT-4 Turbo', description: 'Faster GPT-4' },

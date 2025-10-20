@@ -22,7 +22,10 @@ export default function ChatBot() {
   const [selectedModel, setSelectedModel] = useState(localStorage.getItem('selected_model') || API_CONFIG.DEFAULT_MODEL)
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
-  const [autoSpeak, setAutoSpeak] = useState(localStorage.getItem('auto_speak') === 'true')
+  const [autoSpeak, setAutoSpeak] = useState(() => {
+    const saved = localStorage.getItem('auto_speak')
+    return saved !== null ? saved === 'true' : true // Default to true if not set
+  })
   const [voiceSpeed, setVoiceSpeed] = useState(parseFloat(localStorage.getItem('voice_speed')) || 1.0)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
@@ -33,6 +36,13 @@ export default function ChatBot() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // Initialize auto-speak to true on first load
+  useEffect(() => {
+    if (localStorage.getItem('auto_speak') === null) {
+      localStorage.setItem('auto_speak', 'true')
+    }
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('selected_model', selectedModel)
