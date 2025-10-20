@@ -3,7 +3,7 @@
 // This file contains the OpenRouter API configuration
 
 // Use environment variable if available, otherwise fall back to hardcoded key
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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'
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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'
 
 // Validate API key
 if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your_api_key_here') {

@@ -113,10 +113,29 @@ export default function ChatBot() {
     // Cancel any ongoing speech
     synthesisRef.current.cancel()
 
-    // Replace COGNIX with phonetic spelling for better pronunciation
-    const spokenText = text
+    // Clean text for speech
+    let spokenText = text
+      // Replace COGNIX with phonetic spelling
       .replace(/COGNIX/g, 'Cognix')
       .replace(/Cognix/g, 'Cog-nix')
+      // Remove emojis (all Unicode emoji ranges)
+      .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Emoticons
+      .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // Misc Symbols and Pictographs
+      .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // Transport and Map
+      .replace(/[\u{1F1E0}-\u{1F1FF}]/gu, '') // Flags
+      .replace(/[\u{2600}-\u{26FF}]/gu, '')   // Misc symbols
+      .replace(/[\u{2700}-\u{27BF}]/gu, '')   // Dingbats
+      .replace(/[\u{1F900}-\u{1F9FF}]/gu, '') // Supplemental Symbols and Pictographs
+      .replace(/[\u{1FA00}-\u{1FA6F}]/gu, '') // Chess Symbols
+      .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '') // Symbols and Pictographs Extended-A
+      // Remove special characters but keep basic punctuation
+      .replace(/[^\w\s.,!?;:()\-'"/]/g, '')
+      // Clean up multiple spaces
+      .replace(/\s+/g, ' ')
+      .trim()
+
+    // Only speak if there's actual text left
+    if (!spokenText) return
 
     const utterance = new SpeechSynthesisUtterance(spokenText)
     utterance.rate = voiceSpeed
