@@ -211,14 +211,23 @@ function MouseTracker({ setMousePosition }) {
 
 export default function Background3D() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const isMobile = window.innerWidth < 768
 
   return (
     <div className="fixed inset-0 -z-10" style={{ pointerEvents: 'none' }}>
       <Canvas
-        camera={{ position: [0, 0, 10], fov: 75 }}
-        style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%)' }}
-        dpr={[1, 2]}
-        performance={{ min: 0.5 }}
+        camera={{ position: [0, 0, 10], fov: isMobile ? 85 : 75 }}
+        style={{ 
+          background: 'linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%)',
+          width: '100%',
+          height: '100%'
+        }}
+        dpr={isMobile ? [1, 1.5] : [1, 2]}
+        performance={{ min: isMobile ? 0.3 : 0.5 }}
+        gl={{ 
+          antialias: !isMobile,
+          powerPreference: isMobile ? 'low-power' : 'high-performance'
+        }}
       >
         <MouseTracker setMousePosition={setMousePosition} />
         <Scene mousePosition={mousePosition} />

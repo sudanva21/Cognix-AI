@@ -299,54 +299,54 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
   }
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center p-2 sm:p-4">
+    <div className="relative w-full h-full flex items-center justify-center p-1 sm:p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-4xl h-[95vh] sm:h-[90vh] glass rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+        className="w-full max-w-4xl h-[98vh] sm:h-[90vh] glass rounded-xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
       >
         {/* Header */}
-        <div className="glass border-b border-white/10 p-2 sm:p-6 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        <div className="glass border-b border-white/10 p-2 sm:p-6 flex items-center justify-between gap-1 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-1">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0"
+              className="w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0"
             >
-              <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+              <Sparkles className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-white" />
             </motion.div>
             <div className="min-w-0 flex-1">
-              <h1 className="text-sm sm:text-2xl font-bold text-white truncate">COGNIX</h1>
-              <p className="text-xs sm:text-sm text-white/60 hidden sm:block">Powered by Kriszz</p>
+              <h1 className="text-xs sm:text-2xl font-bold text-white truncate">COGNIX</h1>
+              <p className="text-[10px] sm:text-sm text-white/60 hidden sm:block">Powered by Kriszz</p>
             </div>
           </div>
-          <div className="flex gap-1 sm:gap-2 flex-shrink-0">
+          <div className="flex gap-0.5 sm:gap-2 flex-shrink-0">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={clearChat}
-              className="p-2 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors"
+              className="p-1.5 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors"
               title="Clear chat"
             >
-              <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
+              <Trash2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white/80" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors"
+              className="p-1.5 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors"
               title="Settings"
             >
-              <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
+              <Settings className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white/80" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleLogout}
-              className="p-2 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-red-500/20 transition-colors"
+              className="p-1.5 sm:p-3 rounded-lg sm:rounded-xl glass hover:bg-red-500/20 transition-colors"
               title="Logout"
             >
-              <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
+              <LogOut className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white/80" />
             </motion.button>
           </div>
         </div>
@@ -358,7 +358,7 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="glass border-b border-white/10 p-3 sm:p-6 space-y-4 sm:space-y-5"
+              className="glass border-b border-white/10 p-2 sm:p-6 space-y-3 sm:space-y-5 flex-shrink-0 overflow-y-auto max-h-[40vh] sm:max-h-none"
             >
               <div>
                 <label className="block text-white/80 text-xs sm:text-sm font-semibold mb-2">AI Model</label>
@@ -441,7 +441,7 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
         </AnimatePresence>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4">
+        <div className="flex-1 overflow-y-auto p-2 sm:p-6 space-y-2 sm:space-y-4 min-h-0">
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.div
@@ -449,30 +449,30 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className={`flex gap-2 sm:gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+                className={`flex gap-1.5 sm:gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
               >
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.role === 'user' 
                     ? 'bg-gradient-to-br from-blue-500 to-cyan-500' 
                     : 'bg-gradient-to-br from-purple-500 to-pink-500'
                 }`}>
                   {message.role === 'user' ? (
-                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                    <User className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white" />
                   ) : (
-                    <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                    <Bot className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white" />
                   )}
                 </div>
-                <div className={`flex-1 max-w-[85%] sm:max-w-[80%] ${message.role === 'user' ? 'items-end' : ''}`}>
-                  <div className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl ${
+                <div className={`flex-1 max-w-[82%] sm:max-w-[80%] ${message.role === 'user' ? 'items-end' : ''}`}>
+                  <div className={`p-2 sm:p-4 rounded-lg sm:rounded-2xl ${
                     message.role === 'user'
                       ? 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30'
                       : message.isError
                       ? 'bg-red-500/20 border border-red-500/30'
                       : 'glass border border-white/10'
                   }`}>
-                    <p className="text-sm sm:text-base text-white whitespace-pre-wrap break-words">{message.content}</p>
+                    <p className="text-xs sm:text-base text-white whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
                   </div>
-                  <p className="text-xs text-white/40 mt-1 px-2">
+                  <p className="text-[10px] sm:text-xs text-white/40 mt-0.5 sm:mt-1 px-1 sm:px-2">
                     {message.timestamp.toLocaleTimeString()}
                   </p>
                 </div>
@@ -484,12 +484,12 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex gap-2 sm:gap-3"
+              className="flex gap-1.5 sm:gap-3"
             >
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                <Bot className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-white" />
               </div>
-              <div className="glass p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-white/10">
+              <div className="glass p-2 sm:p-4 rounded-lg sm:rounded-2xl border border-white/10">
                 <div className="flex gap-2">
                   <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
@@ -514,24 +514,24 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
         </div>
 
         {/* Input */}
-        <div className="glass border-t border-white/10 p-3 sm:p-6">
-          <form onSubmit={sendMessage} className="flex gap-2 sm:gap-3">
+        <div className="glass border-t border-white/10 p-2 sm:p-6 flex-shrink-0">
+          <form onSubmit={sendMessage} className="flex gap-1 sm:gap-3">
             <motion.button
               type="button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleVoiceInput}
               disabled={isLoading}
-              className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl flex-shrink-0 ${
+              className={`p-2 sm:p-4 rounded-lg sm:rounded-2xl flex-shrink-0 ${
                 isListening 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 animate-pulse' 
                   : 'glass hover:bg-white/10'
               } transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {isListening ? (
-                <MicOff className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <MicOff className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
               ) : (
-                <Mic className="w-5 h-5 sm:w-6 sm:h-6 text-white/80" />
+                <Mic className="w-4 h-4 sm:w-6 sm:h-6 text-white/80" />
               )}
             </motion.button>
             <input
@@ -541,7 +541,7 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
               onChange={(e) => setInput(e.target.value)}
               placeholder={isListening ? "Listening..." : "Ask me anything..."}
               disabled={isLoading}
-              className="flex-1 px-4 py-3 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl glass text-sm sm:text-base text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+              className="flex-1 px-2 py-2 sm:px-6 sm:py-4 rounded-lg sm:rounded-2xl glass text-xs sm:text-base text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
             />
             {isSpeaking && (
               <motion.button
@@ -549,9 +549,9 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={stopSpeaking}
-                className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white flex-shrink-0"
+                className="p-2 sm:p-4 rounded-lg sm:rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white flex-shrink-0"
               >
-                <MicOff className="w-5 h-5 sm:w-6 sm:h-6" />
+                <MicOff className="w-4 h-4 sm:w-6 sm:h-6" />
               </motion.button>
             )}
             <motion.button
@@ -559,9 +559,9 @@ Your purpose is to be a helpful, accurate, and friendly AI assistant. Provide cl
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="px-4 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 flex-shrink-0"
+              className="px-3 py-2 sm:px-8 sm:py-4 rounded-lg sm:rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs sm:text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2 flex-shrink-0"
             >
-              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Send className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               <span className="hidden sm:inline">Send</span>
             </motion.button>
           </form>

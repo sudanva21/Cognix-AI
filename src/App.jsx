@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="w-full h-screen overflow-hidden">
+        <div className="w-full h-screen overflow-hidden relative">
           <Background3D />
           <Routes>
             <Route path="/login" element={<Login />} />
